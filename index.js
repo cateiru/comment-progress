@@ -41,21 +41,21 @@ import { getCommenter } from './comment/commenter';
     }
 
     const effectiveModes = [
-      ['recreate', recreateComment],
-      ['append', appendComment],
-      ['replace', replaceComment],
-      ['delete', deleteComment],
-    ].filter((i) => i === 'true');
+      { name: 'recreate', flag: recreateComment },
+      { name: 'append', flag: appendComment },
+      { name: 'replace', flag: replaceComment },
+      { name: 'delete', flag: deleteComment },
+    ].filter((m) => m.flag === 'true');
 
     if (effectiveModes.length > 1) {
-      const effectiveModeNames = effectiveModes.map((i) => i[0]).join(', ');
+      const effectiveModeNames = effectiveModes.map((m) => m.name).join(', ');
       core.setFailed(`Only one of ${effectiveModeNames} can be set to true.`);
       return;
     }
 
     let mode;
 
-    switch (effectiveModes[0][0]) {
+    switch (effectiveModes[0].name) {
       case 'recreate':
         mode = recreateMode;
         break;
